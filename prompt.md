@@ -6,6 +6,7 @@ Include the following:
 * a simple dark/light mode switcher which uses local storage for remembering the user's preference
 * a copy results button
 * a "Random" button which sets all user coices to their respective random selection and randomly chooses to use fudge dice
+* because this application relies heavily on JavaScript for core functionality, ensure graceful degradation for non-JavaScript environments. This includes both text-based browsers (like Lynx) and modern browsers with JavaScript disabled by user preference
 
 1. We should allow the user to declare the spell book owner's class (magic-user or illusionist) or choose randomly for them.
 2. We should give the user the option to either declare the spell book owner's Intelligence score (between 3 and 18), choose the average (10), or have the score randomly determined (between 3 and 18).
