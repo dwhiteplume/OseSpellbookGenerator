@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="fediverse:creator" content="@dariusw@beige.party">
+		<meta property="og:title" content="OSE Spellbook Generator">
+    <meta property="og:description" content="Create a random spell book for OSE with either magic-user or illusionist spells.">
+    <meta property="og:image" content="https://dariuswhiteplume.neocities.org/avatar.png">
+    <meta property="og:url" content="https://dariuswhiteplume.neocities.org/spellbook.html">
+    <meta property="og:type" content="website">
+    <title>OSE Spellbook Generator</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --input-bg: #fff;
+            --input-border: #ccc;
+            --button-bg: #4a5568;
+            --button-text: #fff;
+            --button-hover: #2d3748;
+            --textarea-bg: #fff;
+            --textarea-border: #ccc;
+            --heading-color: #2d3748;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a202c;
+            --text-color: #e2e8f0;
+            --input-bg: #2d3748;
+            --input-border: #4a5568;
+            --button-bg: #4a5568;
+            --button-text: #e2e8f0;
+            --button-hover: #718096;
+            --textarea-bg: #2d3748;
+            --textarea-border: #4a5568;
+            --heading-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            color: var(--heading-color);
+        }
+
+        .theme-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .theme-switcher button {
+            background: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--input-border);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        button {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            background-color: var(--textarea-bg);
+            color: var(--text-color);
+            border: 1px solid var(--textarea-border);
+            border-radius: 4px;
+            padding: 10px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        @media (max-width: 480px) {
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="theme-switcher">
+            <button id="themeToggle">Toggle Theme</button>
+        </div>
+        
+        <h1>OSE Spellbook Generator</h1>
+        
+        <form id="spellbookForm">
+            <div class="form-group">
+                <label for="class">Spellbook Owner's Class:</label>
+                <select id="class" name="class">
+                    <option value="magic-user">Magic-User</option>
+                    <option value="illusionist">Illusionist</option>
+                    <option value="random">Random</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="intelligence">Intelligence Score:</label>
+                <select id="intelligence" name="intelligence">
+                    <option value="average">Average (10)</option>
+                    <option value="random">Random (3-18)</option>
+                    <option value="custom">Custom</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="customIntelligenceGroup" style="display: none;">
+                <label for="customIntelligence">Custom Intelligence (3-18):</label>
+                <input type="number" id="customIntelligence" name="customIntelligence" min="3" max="18" value="10">
+            </div>
+            
+            <div class="form-group">
+                <label for="level">Caster Level:</label>
+                <select id="level" name="level">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="random">Random (1-14)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="fudgeDice" name="fudgeDice">
+                    <label for="fudgeDice">Use Fudge Dice (4dF)</label>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button type="button" id="generateButton">Generate Spellbook</button>
+                <button type="button" id="randomButton">Random</button>
+                <button type="button" id="copyButton">Copy Results</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="result">Spellbook:</label>
+                <textarea id="result" readonly></textarea>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Theme switching functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Show/hide custom intelligence input
+        const intelligenceSelect = document.getElementById('intelligence');
+        const customIntelligenceGroup = document.getElementById('customIntelligenceGroup');
+        
+        intelligenceSelect.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                customIntelligenceGroup.style.display = 'block';
+            } else {
+                customIntelligenceGroup.style.display = 'none';
+            }
+        });
+
+        // Spell lists
+        const spellLists = {
+            'illusionist': {
+                1: [
+                    'Auditory Illusion', 'Chromatic Orb', 'Colour Spray', 'Dancing Lights',
+                    'Detect Illusion', 'Glamour', 'Hypnotism', 'Light', 'Darkness',
+                    'Phantasmal Force', 'Read Magic', 'Spook', 'Wall of Fog'
+                ],
+                2: [
+                    'Blindness / Deafness', 'Blur', 'Detect Magic', 'False Aura',
+                    'Fascinate', 'Hypnotic Pattern', 'Improved Phantasmal Force',
+                    'Invisibility', 'Magic Mouth', 'Mirror Image', 'Quasimorph', 'Whispering Wind'
+                ],
+                3: [
+                    'Blacklight', 'Dispel Illusion', 'Fear', 'Hallucinatory Terrain',
+                    'Invisibility 10\' Radius', 'Nondetection', 'Paralysation',
+                    'Phantom Steed', 'Rope Trick', 'Spectral Force', 'Suggestion', 'Wraithform'
+                ],
+                4: [
+                    'Confusion', 'Dispel Magic', 'Emotion', 'Illusory Stamina',
+                    'Improved Invisibility', 'Massmorph', 'Minor Creation',
+                    'Phantasmal Killer', 'Rainbow Pattern', 'Shadow Monsters',
+                    'Solid Fog', 'Veil of Abandonment'
+                ],
+                5: [
+                    'Chaos', 'Demi-Shadow Monsters', 'Illusion', 'Looking Glass',
+                    'Major Creation', 'Maze of Mirrors', 'Projected Image',
+                    'Seeming', 'Shadowcast', 'Shadowy Transformation', 'Time Flow', 'Visitation'
+                ],
+                6: [
+                    'Acid Fog', 'Dream Quest', 'Impersonation', 'Manifest Dream',
+                    'Mass Suggestion', 'Mislead', 'Permanent Illusion',
+                    'Shades', 'Through the Looking Glass', 'Triggered Illusion',
+                    'True Seeing', 'Vision'
+                ]
+            },
+            'magic-user': {
+                1: [
+                    'Charm Person', 'Detect Magic', 'Floating Disc', 'Hold Portal',
+                    'Light', 'Darkness', 'Magic Missile', 'Protection from Evil',
+                    'Read Languages', 'Read Magic', 'Shield', 'Sleep', 'Ventriloquism'
+                ],
+                2: [
+                    'Continual Light', 'Continual Darkness', 'Detect Evil', 'Detect Invisible',
+                    'ESP', 'Invisibility', 'Knock', 'Levitate', 'Locate Object',
+                    'Mirror Image', 'Phantasmal Force', 'Web', 'Wizard Lock'
+                ],
+                3: [
+                    'Clairvoyance', 'Dispel Magic', 'Fire Ball', 'Fly', 'Haste',
+                    'Hold Person', 'Infravision', 'Invisibility 10\' Radius',
+                    'Lightning Bolt', 'Protection from Evil 10\' Radius',
+                    'Protection from Normal Missiles', 'Water Breathing'
+                ],
+                4: [
+                    'Charm Monster', 'Confusion', 'Dimension Door', 'Growth of Plants',
+                    'Hallucinatory Terrain', 'Massmorph', 'Polymorph Others',
+                    'Polymorph Self', 'Remove Curse', 'Curse', 'Wall of Fire',
+                    'Wall of Ice', 'Wizard Eye'
+                ],
+                5: [
+                    'Animate Dead', 'Cloudkill', 'Conjure Elemental', 'Contact Higher Plane',
+                    'Feeblemind', 'Hold Monster', 'Magic Jar', 'Pass-Wall',
+                    'Telekinesis', 'Teleport', 'Transmute Rock to Mud',
+                    'Transmute Mud to Rock', 'Wall of Stone'
+                ],
+                6: [
+                    'Anti-Magic Shell', 'Control Weather', 'Death Spell', 'Disintegrate',
+                    'Geas', 'Remove Geas', 'Invisible Stalker', 'Lower Water',
+                    'Move Earth', 'Part Water', 'Projected Image', 'Reincarnation',
+                    'Stone to Flesh', 'Flesh to Stone'
+                ]
+            }
+        };
+
+        // Intelligence to base spells mapping
+        const intToBaseSpells = {
+            '3-5': 1,
+            '6-9': 2,
+            '10-14': 3,
+            '15-17': 4,
+            '18': 5
+        };
+
+        // Level progression table
+        const levelProgression = {
+            1: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0},
+            2: {1: 1, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0},
+            3: {1: 1, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0},
+            4: {1: 1, 2: 2, 3: 0, 4: 0, 5: 0, 6: 0},
+            5: {1: 1, 2: 2, 3: 1, 4: 0, 5: 0, 6: 0},
+            6: {1: 1, 2: 2, 3: 2, 4: 0, 5: 0, 6: 0},
+            7: {1: 2, 2: 2, 3: 2, 4: 1, 5: 0, 6: 0},
+            8: {1: 2, 2: 3, 3: 2, 4: 2, 5: 0, 6: 0},
+            9: {1: 2, 2: 3, 3: 3, 4: 2, 5: 1, 6: 0},
+            10: {1: 2, 2: 3, 3: 3, 4: 3, 5: 2, 6: 0},
+            11: {1: 3, 2: 3, 3: 3, 4: 3, 5: 2, 6: 1},
+            12: {1: 3, 2: 4, 3: 3, 4: 3, 5: 3, 6: 2},
+            13: {1: 3, 2: 4, 3: 4, 4: 3, 5: 3, 6: 3},
+            14: {1: 3, 2: 4, 3: 4, 4: 4, 5: 3, 6: 3}
+        };
+
+        // Utility functions
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function roll4dF() {
+            let total = 0;
+            for (let i = 0; i < 4; i++) {
+                total += getRandomInt(-1, 1);
+            }
+            return total;
+        }
+
+        function getIntelligenceCategory(int) {
+            if (int >= 3 && int <= 5) return '3-5';
+            if (int >= 6 && int <= 9) return '6-9';
+            if (int >= 10 && int <= 14) return '10-14';
+            if (int >= 15 && int <= 17) return '15-17';
+            if (int === 18) return '18';
+            return '10-14'; // Default
+        }
+
+        function getBaseSpells(int) {
+            const category = getIntelligenceCategory(int);
+            return intToBaseSpells[category];
+        }
+
+        function getRandomSpell(level, classType) {
+            const spells = spellLists[classType][level];
+            const randomIndex = getRandomInt(0, spells.length - 1);
+            return spells[randomIndex];
+        }
+
+        function getAvailableSpellLevels(spellCounts) {
+            const availableLevels = [];
+            for (let level = 1; level <= 6; level++) {
+                if (spellCounts[level] > 0) {
+                    availableLevels.push(level);
+                }
+            }
+            return availableLevels;
+        }
+
+        // Main spellbook generation function
+        function generateSpellbook() {
+            // Get form values
+            const classType = document.getElementById('class').value;
+            const intelligenceOption = document.getElementById('intelligence').value;
+            const levelOption = document.getElementById('level').value;
+            const useFudgeDice = document.getElementById('fudgeDice').checked;
+            
+            // Determine class (random if needed)
+            let actualClass = classType;
+            if (classType === 'random') {
+                actualClass = Math.random() < 0.5 ? 'magic-user' : 'illusionist';
+            }
+            
+            // Determine intelligence
+            let intelligence;
+            if (intelligenceOption === 'average') {
+                intelligence = 10;
+            } else if (intelligenceOption === 'random') {
+                intelligence = getRandomInt(3, 18);
+            } else {
+                intelligence = parseInt(document.getElementById('customIntelligence').value);
+            }
+            
+            // Determine level
+            let level;
+            if (levelOption === 'random') {
+                level = getRandomInt(1, 14);
+            } else {
+                level = parseInt(levelOption);
+            }
+            
+            // Calculate base spells from intelligence
+            const baseSpells = getBaseSpells(intelligence);
+            
+            // Initialize spell counts
+            let spellCounts = {};
+            for (let i = 1; i <= 6; i++) {
+                spellCounts[i] = 0;
+            }
+            
+            // Set level 1 spells
+            spellCounts[1] = baseSpells + levelProgression[level][1];
+            
+            // Add spells from other levels
+            for (let i = 2; i <= 6; i++) {
+                spellCounts[i] = levelProgression[level][i];
+            }
+            
+            // Apply fudge dice if selected
+            let fudgeResult = 0;
+            let incompleteSpells = [];
+            
+            if (useFudgeDice) {
+                fudgeResult = roll4dF();
+                
+                if (fudgeResult > 0) {
+                    // Add spells
+                    const availableLevels = getAvailableSpellLevels(spellCounts);
+                    
+                    for (let i = 0; i < fudgeResult; i++) {
+                        if (availableLevels.length > 0) {
+                            const randomLevel = availableLevels[getRandomInt(0, availableLevels.length - 1)];
+                            spellCounts[randomLevel]++;
+                        }
+                    }
+                } else if (fudgeResult < 0) {
+                    // Mark spells as incomplete (we'll handle this after selecting spells)
+                    incompleteSpells = new Array(Math.abs(fudgeResult));
+                }
+            }
+            
+            // Select actual spells
+            const spellbook = {};
+            for (let i = 1; i <= 6; i++) {
+                spellbook[i] = [];
+                
+                if (spellCounts[i] > 0) {
+                    const availableSpells = [...spellLists[actualClass][i]];
+                    
+                    for (let j = 0; j < spellCounts[i]; j++) {
+                        if (availableSpells.length === 0) break;
+                        
+                        const randomIndex = getRandomInt(0, availableSpells.length - 1);
+                        const selectedSpell = availableSpells.splice(randomIndex, 1)[0];
+                        spellbook[i].push(selectedSpell);
+                    }
+                }
+            }
+            
+            // Handle incomplete spells from negative fudge result
+            if (incompleteSpells.length > 0) {
+                // First, check for levels with 0 spells
+                const zeroLevels = [];
+                for (let i = 1; i <= 6; i++) {
+                    if (spellCounts[i] === 0) {
+                        zeroLevels.push(i);
+                    }
+                }
+                
+                // For each incomplete spell to mark
+                for (let i = 0; i < incompleteSpells.length; i++) {
+                    if (zeroLevels.length > 0) {
+                        // Add a spell from a zero level and mark it incomplete
+                        const randomZeroLevel = zeroLevels[getRandomInt(0, zeroLevels.length - 1)];
+                        const newSpell = getRandomSpell(randomZeroLevel, actualClass);
+                        
+                        if (!spellbook[randomZeroLevel]) {
+                            spellbook[randomZeroLevel] = [];
+                        }
+                        
+                        spellbook[randomZeroLevel].push(newSpell + " [Incomplete]");
+                        zeroLevels.splice(zeroLevels.indexOf(randomZeroLevel), 1);
+                    } else {
+                        // Mark an existing spell as incomplete
+                        const availableLevels = getAvailableSpellLevels(spellCounts);
+                        
+                        if (availableLevels.length > 0) {
+                            const randomLevel = availableLevels[getRandomInt(0, availableLevels.length - 1)];
+                            const spellsAtLevel = spellbook[randomLevel];
+                            
+                            if (spellsAtLevel.length > 0) {
+                                const randomSpellIndex = getRandomInt(0, spellsAtLevel.length - 1);
+                                
+                                // Check if the spell is already marked incomplete
+                                if (!spellsAtLevel[randomSpellIndex].includes("[Incomplete]")) {
+                                    spellsAtLevel[randomSpellIndex] += " [Incomplete]";
+                                } else {
+                                    // Try again with a different spell
+                                    i--;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Format output
+            let output = `Spellbook for Level ${level} ${actualClass}\n`;
+            output += `Intelligence: ${intelligence}\n`;
+            
+            if (useFudgeDice) {
+                output += `Fudge Dice Result: ${fudgeResult}\n`;
+            }
+            
+            output += "\n";
+            
+            for (let i = 1; i <= 6; i++) {
+                if (spellbook[i].length > 0) {
+                    output += `Level ${i} Spells:\n`;
+                    spellbook[i].sort().forEach(spell => {
+                        output += `  - ${spell}\n`;
+                    });
+                    output += "\n";
+                }
+            }
+            
+            document.getElementById('result').value = output;
+        }
+
+        // Random button functionality
+        document.getElementById('randomButton').addEventListener('click', function() {
+            // Set random class
+            const classOptions = ['magic-user', 'illusionist', 'random'];
+            document.getElementById('class').value = classOptions[getRandomInt(0, 2)];
+            
+            // Set random intelligence option
+            const intOptions = ['average', 'random', 'custom'];
+            const selectedIntOption = intOptions[getRandomInt(0, 2)];
+            document.getElementById('intelligence').value = selectedIntOption;
+            
+            if (selectedIntOption === 'custom') {
+                document.getElementById('customIntelligence').value = getRandomInt(3, 18);
+                document.getElementById('customIntelligenceGroup').style.display = 'block';
+            } else {
+                document.getElementById('customIntelligenceGroup').style.display = 'none';
+            }
+            
+            // Set random level
+            const levelOptions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', 'random'];
+            document.getElementById('level').value = levelOptions[getRandomInt(0, 14)];
+            
+            // Randomly decide to use fudge dice
+            document.getElementById('fudgeDice').checked = Math.random() < 0.5;
+            
+            // Generate the spellbook
+            generateSpellbook();
+        });
+
+        // Copy button functionality
+        document.getElementById('copyButton').addEventListener('click', function() {
+            const resultTextarea = document.getElementById('result');
+            resultTextarea.select();
+            document.execCommand('copy');
+            
+            // Provide visual feedback
+            const originalText = this.textContent;
+            this.textContent = 'Copied!';
+            setTimeout(() => {
+                this.textContent = originalText;
+            }, 2000);
+        });
+
+        // Generate button functionality
+        document.getElementById('generateButton').addEventListener('click', generateSpellbook);
+
+        // Initialize with a default spellbook
+        window.addEventListener('DOMContentLoaded', generateSpellbook);
+    </script>
+	<center>
+	<a href="./spellbookReleaseNotes.html">Release Notes</a><br />
+		<a href="https://chat.deepseek.com/share/xbbmaf0tvcd0m9xh94">DeepSeek Prompt for this Page</a>
+	</center>
+</body>
+</html>

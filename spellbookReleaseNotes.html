@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="fediverse:creator" content="@yourusername@your.instance">
+    <meta property="og:title" content="OSE Spellbook Generator - Release Notes">
+    <meta property="og:description" content="Production release of the Old School Essentials Spellbook Generator with dark mode, random generation, and mobile-friendly design">
+    <meta property="og:image" content="https://example.com/spellbook-og-image.png">
+    <meta property="og:url" content="https://example.com/spellbookReleaseNotes.html">
+    <meta property="og:type" content="website">
+    <title>OSE Spellbook Generator - Release Notes</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .release-notes {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .version-badge {
+            background: #4a5568;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        h1, h2, h3 {
+            color: #2d3748;
+        }
+        
+        .tldr {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .features-list, .technical-list {
+            padding-left: 20px;
+        }
+        
+        .features-list li, .technical-list li {
+            margin-bottom: 8px;
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px solid #e2e8f0;
+            margin: 30px 0;
+        }
+        
+        .footnotes {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        /* Hide emoji spans from text browsers */
+        .emoji {
+            display: inline;
+        }
+        
+        .emoji::before {
+            content: "";
+        }
+        
+        /* For graphical browsers, show emoji before heading */
+        .emoji::before {
+            content: attr(data-emoji) " ";
+        }
+        
+        /* For text browsers, hide the emoji span entirely and show only heading text */
+        @media not screen {
+            .emoji {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .release-notes {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="release-notes">
+        <h1>OSE Spellbook Generator - Release Notes</h1>
+        
+        <!-- TL/DR Section -->
+        <div class="tldr">
+            <h2>TL/DR: Version 1.0 Production Release</h2>
+            <p><strong>Mobile-friendly spellbook generator for Old School Essentials</strong> with dark mode, random generation, and clipboard support. Generates spellbooks for Magic-Users and Illusionists based on intelligence, level, and optional fudge dice mechanics.</p>
+        </div>
+
+        <!-- Version 1.0.0 -->
+        <h2><span class="version-badge">v1.0.0</span> - Production Release</h2>
+        <h3>December 2023</h3>
+        
+        <h3><span class="emoji" data-emoji="🎯"></span>Key Features</h3>
+        <ul class="features-list">
+            <li><strong>Spellbook Generation</strong>: Create spellbooks for Magic-Users or Illusionists</li>
+            <li><strong>Intelligence-Based Calculation</strong>: Base spells determined by INT score (3-18)</li>
+            <li><strong>Level Progression</strong>: Accurate spell progression from levels 1-14</li>
+            <li><strong>Fudge Dice Integration</strong>: Optional 4dF rolls for spellbook variations</li>
+            <li><strong>Mobile-First Design</strong>: Responsive interface optimized for phones</li>
+            <li><strong>Dark/Light Mode</strong>: Theme switching with local storage persistence</li>
+            <li><strong>Random Generation</strong>: One-click random spellbook creation</li>
+            <li><strong>Copy to Clipboard</strong>: Easy sharing of generated spellbooks</li>
+        </ul>
+        
+        <h3><span class="emoji" data-emoji="⚙️"></span>Technical Implementation</h3>
+        <ul class="technical-list">
+            <li>Pure HTML/CSS/JavaScript - no external dependencies</li>
+            <li>Local storage for theme preferences</li>
+            <li>Complete OSE Advanced Spellbook Rules implementation</li>
+            <li>All spell lists from OSE Advanced Player's Tome</li>
+            <li>Cross-browser compatible</li>
+            <li>Modern JavaScript application</li>
+        </ul>
+        
+        <h3><span class="emoji" data-emoji="📱"></span>User Experience</h3>
+        <ul class="features-list">
+            <li>Intuitive form-based input</li>
+            <li>Clear visual feedback for all actions</li>
+            <li>Accessible color schemes and contrast</li>
+            <li>Fast generation with no page reloads</li>
+            <li>Comprehensive error handling</li>
+        </ul>
+        
+        <hr>
+        
+        <h3><span class="emoji" data-emoji="🔮"></span>Spellbook Mechanics Implemented</h3>
+        <p><strong>Intelligence to Base Spells:</strong></p>
+        <pre>
+INT 3-5: 1 spell
+INT 6-9: 2 spells  
+INT 10-14: 3 spells
+INT 15-17: 4 spells
+INT 18: 5 spells
+        </pre>
+        
+        <p><strong>Fudge Dice Results:</strong></p>
+        <ul>
+            <li><strong>Positive</strong>: Add spells to random available levels</li>
+            <li><strong>Zero</strong>: No changes to spell count</li>
+            <li><strong>Negative</strong>: Mark spells as incomplete for research</li>
+        </ul>
+        
+        <div class="footnotes">
+            <p><em>Based on Old School Essentials: Advanced Player's Tome, Advanced Spell Book Rules (Optional Rule) p112</em></p>
+            <p><em>This product is based on the Old School Essentials SRD: <a href="https://oldschoolessentials.necroticgnome.com/srd/index.php/Main_Page" target="_blank">oldschoolessentials.necroticgnome.com</a></em></p>
+            <p><em>This work includes material taken from the Old School Essentials System Reference Document and is conformant with the Open Gaming License.</em></p>
+        </div>
+    </div>
+</body>
+</html>
