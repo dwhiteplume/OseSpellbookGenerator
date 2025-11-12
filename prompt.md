@@ -20,6 +20,8 @@ We need to add meradata to the page for social media previews. Include the follo
 <meta property="og:type" content="website">
 ```
 
+### UIX
+
 1. We should allow the user to declare the spell book owner's class (magic-user or illusionist) or choose randomly for them.
 2. We should give the user the option to either declare the spell book owner's Intelligence score (between 3 and 18), choose the average (10), or have the score randomly determined (between 3 and 18).
 3. We should allow the user to specify the level of the caster (between 1 and 14) or let it be chosen randomly.
