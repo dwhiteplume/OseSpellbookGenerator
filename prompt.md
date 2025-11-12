@@ -7,6 +7,19 @@ Include the following:
 * a copy results button
 * a "Random" button which sets all user coices to their respective random selection and randomly chooses to use fudge dice
 
+### Page Metadata
+
+We need to add meradata to the page for social media previews. Include the following:
+
+```html
+<meta name="fediverse:creator" content="FEDIVERSE">
+<meta property="og:title" content="OSE Spellbook Generator">
+<meta property="og:description" content="Create a random spell book for OSE with either magic-user or illusionist spells.">
+<meta property="og:image" content="AVATAR">
+<meta property="og:url" content="PAGEURL">
+<meta property="og:type" content="website">
+```
+
 1. We should allow the user to declare the spell book owner's class (magic-user or illusionist) or choose randomly for them.
 2. We should give the user the option to either declare the spell book owner's Intelligence score (between 3 and 18), choose the average (10), or have the score randomly determined (between 3 and 18).
 3. We should allow the user to specify the level of the caster (between 1 and 14) or let it be chosen randomly.
